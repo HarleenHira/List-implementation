@@ -1,0 +1,33 @@
+public PortalDashboard ValidateTagsOnHybridAECard(IList<string> expectedTagNames)
+        {
+            try
+            {
+                IList<string> actualdisplayedTagNames = new List<string>();
+                ReadOnlyCollection<IWebElement> allTags = Browser.webDriver.FindElements(By.XPath("//div[contains(@class,'app-card')]//span"));
+                foreach (IWebElement tagsName in allTags)
+                {
+                    actualdisplayedTagNames.Add(tagsName.Text);
+                }
+                for (int i = 0; i < expectedTagNames.Count; i++)
+                {
+                    //I have to look on 15th Aug -- Aman
+                    string s = expectedTagNames[i];
+                    string s1 = actualdisplayedTagNames[i];
+                    if (expectedTagNames[i].Equals(actualdisplayedTagNames[i].Trim()))
+                    {
+                        PageBase.WriteLog(Logger.LogLevel.Success, "Successfully verified the tag names on AE hybrid product card: " + actualdisplayedTagNames[i]);
+                    }
+                    else
+                    {
+                        throw new Exception("Expected Tag Names = " + expectedTagNames[i] + " Actual Requirement Item = " + actualdisplayedTagNames[i]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                PageBase.WriteLog(Logger.LogLevel.Error, "with Exception message : " + ex.Message);
+                //PageBase.WriteLog(Logger.LogLevel.Error, "with Exception message : " + ex.StackTrace);
+                PageBase.WriteLog(Logger.LogLevel.Error, "", new Exception("Failed to verify the tags on AE product card"));
+            }
+            return this;
+        }
